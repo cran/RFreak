@@ -1,0 +1,50 @@
+[Box: ::freak.core.fitness - ::freak.core.fitness::AbstractFitnessFunction]
+X=620
+Y=197
+
+[Box: ::freak.core.fitness - ::freak.core.fitness::AbstractMultiObjectiveFitnessFunction]
+X=563
+Y=315
+
+[Box: ::freak.core.fitness - ::freak.core.fitness::AbstractSingleObjectiveFitnessFunction]
+X=921
+Y=315
+
+[Box: ::freak.core.fitness - ::freak.core.fitness::AbstractStaticMultiObjectiveFitnessFunction]
+X=650
+Y=501
+
+[Box: ::freak.core.fitness - ::freak.core.fitness::AbstractStaticSingleObjectiveFitnessFunction]
+X=937
+Y=501
+
+[Box: ::freak.core.fitness - ::freak.core.fitness::FitnessFunction]
+X=329
+Y=315
+
+[Box: ::freak.core.fitness - ::freak.core.fitness::FitnessTransformer]
+X=20
+Y=501
+
+[Box: ::freak.core.fitness - ::freak.core.fitness::MultiObjectiveFitnessFunction]
+X=445
+Y=501
+
+[Box: ::freak.core.fitness - ::freak.core.fitness::SingleObjectiveFitnessFunction]
+X=816
+Y=671
+
+[Box: ::freak.core.fitness - ::freak.core.modulesupport::AbstractModule]
+X=583
+Y=40
+
+[Box: ::freak.core.fitness - ::freak.core.modulesupport::Module]
+X=314
+Y=40
+
+[Diagram: ::freak.core.fitness]
+OffsetX=0
+OffsetY=229
+Visibility=0
+ShowAssoc=1
+
