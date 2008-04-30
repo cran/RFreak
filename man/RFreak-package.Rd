@@ -9,16 +9,17 @@ R/FrEAK interface
 An R interface to a modified version of the Free
 Evolutionary Algorithm Kit FrEAK. FrEAK is a toolkit written in
 Java to design and analyze evolutionary algorithms. Both the R
-interface an extended version of FrEAK are contained in the
+interface and an extended version of FrEAK are contained in the
 RFreak package. For more information on FrEAK see
 http://sourceforge.net/projects/freak427/.
 }
 \details{
 \tabular{ll}{
 Package: \tab RFreak\cr
-Version: \tab 0.2-0\cr
-Date: \tab 2007-12-22\cr
+Version: \tab 0.2-1\cr
+Date: \tab 2008-04-30\cr
 Depends: \tab R (>= 2.6.0), rJava (>= 0.5.0)\cr
+Imports: \tab methods\cr
 LazyLoad: \tab yes\cr
 License: \tab GPL (>= 2)\cr
 SystemRequirements: \tab Java (>= 5.0)\cr
@@ -39,7 +40,7 @@ predict-method          predict using new predictors
 }
 }
 \author{
-Robin Nunkesser <Robin.Nunkesser@tu.dortmund.de>
+Robin Nunkesser <Robin.Nunkesser@tu-dortmund.de>
 }
 \references{
 FrEAK: \url{http://sourceforge.net/projects/freak427/}
