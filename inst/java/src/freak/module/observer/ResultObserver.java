@@ -208,17 +208,19 @@ public class ResultObserver extends AbstractObserver implements RunEventListener
 			FitnessFunction fitness = getSchedule().getFitnessFunction();
 			boolean singleObjective = (fitness instanceof SingleObjectiveFitnessFunction); 
 			int runs=(((!Data.csvDisable) && (testDataPath.equals(""))) || ((Data.csvDisable) && (Data.testData==null)))?1:2;
-			if (runs==2) s.append("Data set , ");
-			s.append("Run , Generation , No of generations , ");
-			if (singleObjective) {
-				s.append("Objective value , ");
-			} else {
-				int objectives=((MultiObjectiveFitnessFunction)fitness).getDimensionOfObjectiveSpace();
-				for (int j=1;j<=objectives;j++) {
-					s.append("Objective value "+j+", ");
+			if (this.getRunNumber()==1) {
+				if (runs==2) s.append("Data set , ");
+				s.append("Run , Generation , No of generations , ");
+				if (singleObjective) {
+					s.append("Objective value , ");
+				} else {
+					int objectives=((MultiObjectiveFitnessFunction)fitness).getDimensionOfObjectiveSpace();
+					for (int j=1;j<=objectives;j++) {
+						s.append("Objective value "+j+", ");
+					}
 				}
+				s.append("Individual\n");
 			}
-			s.append("Individual\n");
 			for (int k=0;k<runs;k++) {
 				if (runs==2) {
 					if (k==1) {
@@ -277,13 +279,19 @@ public class ResultObserver extends AbstractObserver implements RunEventListener
 					// MCR Berechnungen fŸr Aufruf aus R!!!!
 					// TODO Ansteuerbar aus R machen, also Test auf Data.csvDisable durch etwas sinnvolleres ersetzen
 					if 	((Data.csvDisable) && (individual.getGenotype() instanceof BooleanFunctionGenotype)) {
-						double mcr=100.0*(1.0-((double)((BooleanFunctionGenotype)individual.getGenotype()).evaluate())/((double)Data.getNumRows()));
 						int length = ((BooleanFunctionGenotype)individual.getGenotype()).evaluateSize();
+						double mcr=100.0*(1.0-((double)((BooleanFunctionGenotype)individual.getGenotype()).evaluate())/((double)Data.getNumRows()));
+						double geccoFit1=0.0;
+						double geccoFit2=0.0;
+						if (fitness instanceof GenericPareto) {
+							geccoFit1=((BooleanFunctionGenotype)individual.getGenotype()).evaluate1s()/(double)Data.getNum1Rows()/3.0+(((BooleanFunctionGenotype)individual.getGenotype()).evaluate0s())/(double)Data.getNum0Rows()/3.0+(double)(((GenericPareto)fitness).getPropertySizePruning()-length+1)/(double)(((GenericPareto)fitness).getPropertySizePruning())/3.0;
+							geccoFit2=((BooleanFunctionGenotype)individual.getGenotype()).evaluate1s()/(double)Data.getNum1Rows()+(((BooleanFunctionGenotype)individual.getGenotype()).evaluate0s())/(double)Data.getNum0Rows()-(double)(length)/((double)((GenericPareto)fitness).getPropertySizePruning()*(double)Data.getNumRows());
+						}
 						if (k==0) {
-							RReturns.getAllMCRinTestData().add(new IndividualSummary(individual.getDateOfBirth(),length,mcr,((BooleanFunctionGenotype)individual.getGenotype()).getCharacteristicBitSet(),Data.getResultBitSet(),Data.getNumRows()));
+							RReturns.getAllMCRinTestData().add(new IndividualSummary(individual.getDateOfBirth(),length,mcr,((BooleanFunctionGenotype)individual.getGenotype()).getCharacteristicBitSet(),Data.getResultBitSet(),Data.getNumRows(),geccoFit1,geccoFit2));
 							if (mcr<RReturns.getBestMCRinTestData()) RReturns.setBestMCRinTestData(mcr);
 						} else {
-							RReturns.getAllMCRinTrainingData().add(new IndividualSummary(individual.getDateOfBirth(),length,mcr,((BooleanFunctionGenotype)individual.getGenotype()).getCharacteristicBitSet(),Data.getResultBitSet(),Data.getNumRows()));
+							RReturns.getAllMCRinTrainingData().add(new IndividualSummary(individual.getDateOfBirth(),length,mcr,((BooleanFunctionGenotype)individual.getGenotype()).getCharacteristicBitSet(),Data.getResultBitSet(),Data.getNumRows(),geccoFit1,geccoFit2));
 						}
 						s.append(mcr+" , ");						
 					}

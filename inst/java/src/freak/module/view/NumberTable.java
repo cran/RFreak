@@ -21,6 +21,7 @@ import freak.core.view.swingsupport.FreakLargeTableModel;
 import freak.core.view.swingsupport.FreakScrollBarAdjustmentListener;
 import freak.core.view.swingsupport.FreakTableModel;
 import freak.core.view.swingsupport.UpdateManager;
+
 import java.awt.BorderLayout;
 import java.lang.reflect.Array;
 import javax.swing.JPanel;

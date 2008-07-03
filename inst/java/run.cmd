@@ -1,2 +1,2 @@
 @title=FrEAK
-@java -jar rfreak-0.2.jar
+@java -jar rfreak-0.2-2.jar

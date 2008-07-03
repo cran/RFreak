@@ -22,7 +22,12 @@ import java.util.Iterator;
  * @author  Melanie
  */
 public class Data implements Serializable{
-	
+	// FŸr Gecco
+	// 1= Standard
+	// 2= Alles
+	// 3= Alle != und ==
+		
+	public static int compareNodeSet=1;
 	//flag that tells the program to not read from a .csv file when readData() is called
 	//this flag should only be set to "true", when the program is run from R
 	//consequently the default value is "false".
@@ -205,40 +210,47 @@ public class Data implements Serializable{
 	}
 	
 	private static void constructCompares(){
+		if (compareNodeSet!=1) exclude=false;
 		 compareSubtrees = new OperatorNodeVector();
 		 for (int i = 0; i < numVars; i++){
 			 int minI = getMinValue(i);
 			 int maxI = getMaxValue(i);
 			 
-			 // >= min entspricht <= max,
+			 // >= min entspricht <= max entspricht 1,
 			 // >= min+1 entspricht != min
 			 // <= min entspricht = min
 			 // <= max-1 entspricht != max
 			 // >= max entspricht = max
 			 
+			// switch (compareNodeSet)
+			 
 			 for (int j = minI; j <= maxI ; j++){
 				 if ((!exclude) || (j!=minI+1)) {
+					 //=					 
 					 StaticConstantNode cn1 = new StaticConstantNode(j);
 					 StaticInputNode in1 = new StaticInputNode(i);
 					 StaticCompareNode com1 = new StaticCompareNode(cn1,in1,false,true,false,numRows,values);
 					 Freak.debug(com1.toString(),4);
 					 compareSubtrees.add(com1);
-	
-					 if (j != minI && j != minI+1 && j!=maxI){
+
+					 //!=
+					 StaticConstantNode cn3 = new StaticConstantNode(j);
+					 StaticInputNode in3 = new StaticInputNode(i);
+					 StaticCompareNode com3 = new StaticCompareNode(cn3,in3,true, false, true,numRows,values);
+					 Freak.debug(com3.toString(),4);
+					 compareSubtrees.add(com3);
+
+					 //>=
+					 if (j != minI && j != minI+1 && j!=maxI && compareNodeSet<3){
 						 StaticConstantNode cn2 = new StaticConstantNode(j);
 						 StaticInputNode in2 = new StaticInputNode(i);
 						 StaticCompareNode com2 = new StaticCompareNode(cn2,in2,false, true, true,numRows,values);
 						 Freak.debug(com2.toString(),4);
 						 compareSubtrees.add(com2);
 					 }
-					 
-					 StaticConstantNode cn3 = new StaticConstantNode(j);
-					 StaticInputNode in3 = new StaticInputNode(i);
-					 StaticCompareNode com3 = new StaticCompareNode(cn3,in3,true, false, true,numRows,values);
-					 Freak.debug(com3.toString(),4);
-					 compareSubtrees.add(com3);
-					 
-					 if (j != minI && j!= maxI-1 && j != maxI){
+					 					 
+					 //<=
+					 if (j != minI && j!= maxI-1 && j != maxI && compareNodeSet<3){
 						 StaticConstantNode cn4 = new StaticConstantNode(j);
 						 StaticInputNode in4 = new StaticInputNode(i);
 						 StaticCompareNode com4 = new StaticCompareNode(cn4,in4,true, true, false,numRows,values);
@@ -757,6 +769,9 @@ public class Data implements Serializable{
         	System.out.print(minValue[j]+"  ");
         }
         System.out.println();		
+	}
+	public static void setCompareNodeSet(int compareNodeSet) {
+		Data.compareNodeSet = compareNodeSet;
 	}
 
 }

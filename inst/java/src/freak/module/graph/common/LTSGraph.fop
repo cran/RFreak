@@ -20,9 +20,9 @@
   </handler>
   <OperatorGraphFile>
     <List type="java.util.ArrayList">
-      <Edge source="2" sourcePort="0" target="1" targetPort="0" />
       <Edge source="0" sourcePort="0" target="2" targetPort="0" />
       <Edge source="0" sourcePort="0" target="3" targetPort="0" />
+      <Edge source="2" sourcePort="0" target="1" targetPort="0" />
       <Edge source="3" sourcePort="0" target="2" targetPort="0" />
     </List>
     <List type="java.util.ArrayList">
@@ -108,13 +108,13 @@
           <String>bounds</String>
           <Rectangle height="24" width="78" x="29" y="110" />
           <String>opaque</String>
-          <Boolean>true</Boolean>
+          <ref id="12" />
         </Map>
         <Configuration descriptionOfAdditional="">
           <Map type="java.util.HashMap">
             <String>PercentMovement</String>
             <Property description="PercentMovement">
-              <Double>20.0</Double>
+              <Double>50.0</Double>
             </Property>
             <String>Name</String>
             <Property description="Name">

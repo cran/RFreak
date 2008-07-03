@@ -5,7 +5,7 @@
  * 
  * This file is a modification of the original file distributed with
  * FrEAK (http://sourceforge.net/projects/freak427/).
- * Last modification: $Date: 2007/12/21 13:38:11 $
+ * Last modification: $Date: 2008/06/09 14:59:08 $
  */
 
 package freak.core.modulesupport;
@@ -311,6 +311,7 @@ public class ClassCollector {
 						// mutation.cycle.KOpt
 						String searchspaceString = searchspace.getClass().getName();
 						searchspaceString = searchspaceString.substring(searchspaceString.lastIndexOf(".") + 1).toLowerCase();
+//						System.out.println("Searching in ."+searchspaceString);
 						File searchspaceFolder = new File(opFolder, searchspaceString);
 						if (searchspaceFolder.exists() && searchspaceFolder.isDirectory()) {
 							addClassesInFolder(searchspaceFolder, "freak.module.operator." + files[i].getName() + "." + searchspaceString + ".", classes, Operator.class, true);

@@ -10,7 +10,7 @@
 
 // GraphViz.java - a simple API to call dot from Java programs
 
-/*$Id: GraphViz.java,v 1.1 2007/12/21 13:38:16 nunkesse Exp $*/
+/*$Id: GraphViz.java,v 1.2 2007/11/28 13:38:08 nunkesse Exp $*/
 /*
  ******************************************************************************
  *                                                                            *

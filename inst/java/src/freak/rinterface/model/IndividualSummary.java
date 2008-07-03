@@ -17,17 +17,12 @@ public class IndividualSummary implements Comparable {
 private int birth;
 private int length;	
 private double mcr;
+private double geccoFit1;
+private double geccoFit2;
 private BitSet valueBitset;
 private BitSet resultBitset;
 private int rows;
-/**
- * @param birth
- * @param length
- * @param mcr
- * @param valueBitset
- * @param resultBitset
- * @param rows
- */
+
 public IndividualSummary(int birth, int length, double mcr, BitSet valueBitset, BitSet resultBitset, int rows) {
 	super();
 	this.birth = birth;
@@ -36,6 +31,27 @@ public IndividualSummary(int birth, int length, double mcr, BitSet valueBitset, 
 	this.valueBitset = valueBitset;
 	this.resultBitset = resultBitset;
 	this.rows = rows;
+	this.geccoFit1=0.0;
+	this.geccoFit2=0.0;
+}
+/**
+ * @param birth
+ * @param length
+ * @param mcr
+ * @param valueBitset
+ * @param resultBitset
+ * @param rows
+ */
+public IndividualSummary(int birth, int length, double mcr, BitSet valueBitset, BitSet resultBitset, int rows,double geccoFit1,double geccoFit2) {
+	super();
+	this.birth = birth;
+	this.length = length;
+	this.mcr = mcr;
+	this.valueBitset = valueBitset;
+	this.resultBitset = resultBitset;
+	this.rows = rows;
+	this.geccoFit1=geccoFit1;
+	this.geccoFit2=geccoFit2;
 }
 
 public int compareTo(Object o) {
@@ -104,6 +120,34 @@ public BitSet getValueBitset() {
  */
 public int getRows() {
 	return rows;
+}
+
+/**
+ * @return the geccoFit1
+ */
+public double getGeccoFit1() {
+	return geccoFit1;
+}
+
+/**
+ * @param geccoFit1 the geccoFit1 to set
+ */
+public void setGeccoFit1(double geccoFit1) {
+	this.geccoFit1 = geccoFit1;
+}
+
+/**
+ * @return the geccoFit2
+ */
+public double getGeccoFit2() {
+	return geccoFit2;
+}
+
+/**
+ * @param geccoFit2 the geccoFit2 to set
+ */
+public void setGeccoFit2(double geccoFit2) {
+	this.geccoFit2 = geccoFit2;
 }	
 
 }

@@ -16,8 +16,8 @@ http://sourceforge.net/projects/freak427/.
 \details{
 \tabular{ll}{
 Package: \tab RFreak\cr
-Version: \tab 0.2-1\cr
-Date: \tab 2008-04-30\cr
+Version: \tab 0.2-2\cr
+Date: \tab 2008-07-03\cr
 Depends: \tab R (>= 2.6.0), rJava (>= 0.5.0)\cr
 Imports: \tab methods\cr
 LazyLoad: \tab yes\cr

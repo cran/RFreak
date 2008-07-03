@@ -17,6 +17,7 @@ import freak.core.graph.OperatorGraph;
 import freak.core.modulesupport.Configurable;
 import freak.core.modulesupport.UnsupportedEnvironmentException;
 import freak.core.population.Individual;
+import freak.module.fitness.pointset.AbstractRobustRegressionFitness;
 import freak.module.fitness.pointset.LtSOptimization;
 import freak.module.fitness.pointset.util.ResidualContainer;
 import freak.module.searchspace.BitString;
@@ -38,7 +39,7 @@ class vglSignedResiduals implements Comparator<ResidualContainer> {
 
 public class LTSMutation extends Mutation implements CompatibleWithDifferentSearchSpaces,Configurable{
 
-	LtSOptimization m_kFitnessFunktion;
+	AbstractRobustRegressionFitness m_kFitnessFunktion;
 	double percentMovement = 2; // richtiger Paremeter zum Einstellen
 	
 	public LTSMutation(OperatorGraph graph){
@@ -110,11 +111,11 @@ public class LTSMutation extends Mutation implements CompatibleWithDifferentSear
 	public void testSchedule(Schedule schedule) throws UnsupportedEnvironmentException {
 		// TODO Auto-generated method stub
 		super.testSchedule(schedule);
-		if (!((schedule.getRealFitnessFunction() instanceof LtSOptimization) 
+		if (!((schedule.getRealFitnessFunction() instanceof AbstractRobustRegressionFitness) 
 				&& (schedule.getGenotypeSearchSpace() instanceof BitString))) {
 			throw new UnsupportedEnvironmentException();			
 		}
-		m_kFitnessFunktion = (LtSOptimization) schedule.getRealFitnessFunction();
+		m_kFitnessFunktion = (AbstractRobustRegressionFitness) schedule.getRealFitnessFunction();
 	}
 	
 	public String getDescription() {

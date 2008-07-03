@@ -440,7 +440,6 @@ public class EditorDialog extends EditorDialogUI {
 
 	protected DefaultTreeModel createOperatorTreeModel() {
 		DefaultTreeModel modules = manager.getTreeModelOfOperators(schedule.getGenotypeSearchSpace());
-
 		return modules;
 	}
 

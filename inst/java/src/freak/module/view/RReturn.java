@@ -21,6 +21,8 @@ import freak.core.fitness.MultiObjectiveFitnessFunction;
 import freak.core.fitness.SingleObjectiveFitnessFunction;
 import freak.core.population.Individual;
 import freak.core.view.swingsupport.*;
+import freak.module.fitness.pointset.AbstractRobustRegressionFitness;
+import freak.module.fitness.pointset.AbstractStaticSingleObjectiveRobustRegressionFitness;
 import freak.module.fitness.pointset.LtSOptimization;
 import freak.module.observer.ResultObserver.Result;
 import freak.module.searchspace.BitStringGenotype;
@@ -124,14 +126,14 @@ public class RReturn extends StdView {
 				if (k==1) {
 					if (Data.csvDisable) {
 						Data.setRData(Data.trainingData);
-						RReturns.setAllMCRinTrainingData(new Vector<IndividualSummary>());
+//						RReturns.setAllMCRinTrainingData(new Vector<IndividualSummary>());
 					}
 					else Data.setDataLocation(((BooleanFunction)schedule.getGenotypeSearchSpace()).getPropertyInputPath());
 				}
 				else {
 					if (Data.csvDisable) {
 						Data.setRData(Data.testData);
-						RReturns.setAllMCRinTestData(new Vector<IndividualSummary>());
+//						RReturns.setAllMCRinTestData(new Vector<IndividualSummary>());
 					}					
 					else Data.setDataLocation(result.getTestDataPath());
 				}
@@ -178,13 +180,13 @@ public class RReturn extends StdView {
 				if (individual.getGenotype() instanceof BooleanFunctionGenotype) {
 					allTrees.add(((BooleanFunctionGenotype)individual.getGenotype()).getDnfbaum());
 				}
-				if ((individual.getGenotype() instanceof BitStringGenotype) && (fitness instanceof LtSOptimization)) {
-					double fitnessValue=((LtSOptimization)fitness).evaluate(individual, result.getBestIndividuals());
+				if ((individual.getGenotype() instanceof BitStringGenotype) && (fitness instanceof AbstractStaticSingleObjectiveRobustRegressionFitness)) {
+					double fitnessValue=((AbstractStaticSingleObjectiveRobustRegressionFitness)fitness).evaluate(individual, result.getBestIndividuals());
 					if (fitnessValue>this.bestValue) {
 						this.bestValue=fitnessValue;
 						RReturns.setResidual(-fitnessValue);
-						RReturns.setFittedHyperplane(((LtSOptimization)fitness).getFittedHyperplane());
-						RReturns.setChosenIndices(((LtSOptimization)fitness).getChosenIndices());
+						RReturns.setFittedHyperplane(((AbstractStaticSingleObjectiveRobustRegressionFitness)fitness).getFittedHyperplane());
+						RReturns.setChosenIndices(((AbstractStaticSingleObjectiveRobustRegressionFitness)fitness).getChosenIndices());
 					}
 				}
 			}

@@ -17,6 +17,15 @@ public class RData {
 	 * @param dim
 	 * @param names
 	 */
+	public RData(double[] values, int[] dim, String[] names) {
+		super();
+		int[] castValues = new int[values.length];
+		for (int i=0;i<values.length;i++) castValues[i]=(int)values[i];
+		this.values = castValues;
+		this.dim = dim;
+		this.names = names;
+	}
+	
 	public RData(int[] values, int[] dim, String[] names) {
 		super();
 		this.values = values;

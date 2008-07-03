@@ -3,7 +3,6 @@
  * please see the file COPYING in the root directory of this
  * distribution or contact <robin.nunkesser@udo.edu>.
  */
-
 package freak.module.fitness.pointset.util;
 
 import java.io.Serializable;

@@ -2,9 +2,10 @@
 \alias{LTSevol}
 \title{Least Trimmed Squares Robust Regression}
 \description{
-Carries out least trimmed squares (LTS) robust regression with an evolutionary algorithm.  The LTS regression method minimizes the sum of the \eqn{h} smallest squared residuals.
+Carries out least trimmed squares (LTS) robust regression with an evolutionary algorithm.  The LTS regression method minimizes the sum of the \eqn{h} smallest squared residuals. Deprecated. Use \code{\link{robreg.evol}} instead.
 }
 \usage{
+## Deprecated:
 LTSevol(y, x, h = NULL, adjust = FALSE, runs = 1, generations = 10000)
 }
 \arguments{
@@ -22,7 +23,7 @@ The function \code{LTSevol} returns an object of class "ltsEA". This object cont
   \item{coefficients}{Vector of coefficient estimates}
   \item{crit}{The value of the objective function of the LTS regression method, i.e., the sum of the h smallest squared raw residuals}
 }
-\references{O. Morell (2006). Vergleich von Algorithmen fuer die Least-Trimmed-Squares-Schaetzung mittels statistischer Versuchsplanung. Diploma thesis, TU Dortmund. 
+\references{O. Morell, T. Bernholt, R. Fried, J. Kunert, and R. Nunkesser (2008). An Evolutionary Algorithm for LTS-Regression: A Comparative Study. \emph{Proceedings of COMPSTAT 2008.} To Appear. 
 
   P. J. Rousseeuw (1984), Least Median of Squares Regression. \emph{Journal of the American Statistical Association} \bold{79}, 871--881.
 

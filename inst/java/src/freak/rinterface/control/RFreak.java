@@ -5,7 +5,7 @@
  * 
  * This file is a modification of the original file distributed with
  * FrEAK (http://sourceforge.net/projects/freak427/).
- * Last modification: $Date: 2007/12/21 13:38:18 $
+ * Last modification: $Date: 2008/06/24 16:03:28 $
  */
 
 package freak.rinterface.control;
@@ -181,6 +181,10 @@ public class RFreak {
 		return "Test erfolgreich";
 		
 	}*/ 
+	
+	public static boolean isStartable() {
+		return (!(System.getProperty("java.vm.name").equalsIgnoreCase("Java HotSpot(TM) Server VM")));
+	}
 	
 	public static void rMain(String[] arguments) throws Exception {
 		// processArguments	

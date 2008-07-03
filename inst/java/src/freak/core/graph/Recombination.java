@@ -36,14 +36,14 @@ abstract public class Recombination extends AbstractVariation {
 		
 		// test if the operator's package is compatible with the current
 		// search space
-		SearchSpace searchSpace = schedule.getPhenotypeSearchSpace();
+		SearchSpace searchSpace = schedule.getGenotypeSearchSpace();
 		String searchSpaceName = searchSpace.getClass().getName().toLowerCase();
 		searchSpaceName = searchSpaceName.substring(searchSpaceName.lastIndexOf('.') + 1, searchSpaceName.length());
 		
 		String packageName = this.getClass().getPackage().getName();
 		
 		if (!(packageName.endsWith(searchSpaceName) || packageName.endsWith("common"))) {
-			throw new IncompatibleModuleException(schedule.getPhenotypeSearchSpace(), "Wrong search space.");
+			throw new IncompatibleModuleException(schedule.getGenotypeSearchSpace(), "Wrong search space.");
 		}
 	}
 

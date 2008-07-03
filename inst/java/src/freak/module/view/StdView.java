@@ -11,11 +11,14 @@
 package freak.module.view;
 
 import freak.core.control.Schedule;
+import freak.core.observer.Observer;
 import freak.core.view.HistoryView;
 import freak.core.view.swingsupport.FreakScrollBarAdjustmentListener;
 import freak.core.view.swingsupport.FreakTextAreaModel;
 import freak.core.view.swingsupport.SlidingWindow;
 import freak.core.view.swingsupport.UpdateManager;
+import freak.module.observer.ResultObserver;
+
 import java.awt.BorderLayout;
 import java.awt.Rectangle;
 import java.lang.reflect.Array;
@@ -129,7 +132,7 @@ public class StdView extends HistoryView {
 		stringLengths.add(new Integer(newText.length()));
 		stringBuffer.append(newText);
 		
-		if (numberOfDisplayedValues != 0) {
+		if ((numberOfDisplayedValues != 0)&&(!(getObserver() instanceof ResultObserver))) {
 			// remove first strings if necessary
 			while (stringLengths.size() > numberOfDisplayedValues) {
 				int length = ((Integer)stringLengths.get(0)).intValue();

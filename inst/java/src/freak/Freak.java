@@ -47,7 +47,8 @@ public class Freak {
 	}
 	
 	public static void main(String[] arguments) throws Exception {
-		// processArguments	
+		System.out.println(RFreak.isStartable());
+		// processArguments			
 		File loadFile = null;
 		File saveFile = null;
 		File[] tempFiles = null;

@@ -46,7 +46,10 @@ public class GenericPareto extends AbstractStaticMultiObjectiveFitnessFunction i
 	public static final int OBJECTIVE_GINI_ON_AND_NODES = 9;
 	public static final int OBJECTIVE_GINI_NEG_ON_AND_NODES = 10;
 	public static final int OBJECTIVE_AVGRATIO = 11;
-	String[] objectives = new String[] { "Cases", "Controls", "Cases+Controls","Length","Standardised Fitness","Standardised Fitness 2xControl","Gini","Gini (neg)","Gini on And-Nodes","Gini (neg) on And-Nodes","AvgRatio" };
+	public static final int OBJECTIVE_STANDARDISED_FITNESS_LENGTH = 12;
+	public static final int OBJECTIVE_STANDARDISED_FITNESS_IMPLICIT_LENGTH = 13;
+	
+	String[] objectives = new String[] { "Cases", "Controls", "Cases+Controls","Length","Standardised Fitness","Standardised Fitness 2xControl","Gini","Gini (neg)","Gini on And-Nodes","Gini (neg) on And-Nodes","AvgRatio","Standardised Fitness with length","Standardised Fitness with implicit length"  };
 
 	private static Schedule staticSchedule;
 
@@ -57,6 +60,8 @@ public class GenericPareto extends AbstractStaticMultiObjectiveFitnessFunction i
 	private int length;
 	
 	private int dimensionOfObjectiveSpace=2;	
+	
+	private boolean predictingModelFound=false;
 	
 	private int[] paretoObjective=new int[3];
 	private int[] paretoObjectiveForMonomials=new int[3];
@@ -259,14 +264,43 @@ public class GenericPareto extends AbstractStaticMultiObjectiveFitnessFunction i
 							rueckgabe[i]=getObjectiveAvgRatio(bfg);
 							break;						
 						}
+						case OBJECTIVE_STANDARDISED_FITNESS_LENGTH:
+						{
+							if ((subsets==1) && (bagging==0)) {
+								rueckgabe[i]=bfg.evaluate1s()/(double)Data.getNum1Rows()/3.0+(bfg.evaluate0s())/(double)Data.getNum0Rows()/3.0+(double)(sizePruning-length+1)/(double)(sizePruning)/3.0;
+							} else {
+								rueckgabe[i]=Integer.MAX_VALUE;
+								for (int j=0;j<subsets;j++) {
+									double standardisedFitness=polynomFulfillment.cases[j]/(double)polynomFulfillment.casesInData[j]/3.0+polynomFulfillment.controls[j]/(double)polynomFulfillment.controlsInData[j]/3.0+(double)(sizePruning-length+1)/(double)(sizePruning)/3.0;
+									if (standardisedFitness<rueckgabe[i]) rueckgabe[i]=standardisedFitness;																
+								}
+							}
+							break;						
+						}						
+						case OBJECTIVE_STANDARDISED_FITNESS_IMPLICIT_LENGTH:
+						{
+							if ((subsets==1) && (bagging==0)) {
+								rueckgabe[i]=bfg.evaluate1s()/(double)Data.getNum1Rows()+(bfg.evaluate0s())/(double)Data.getNum0Rows()-(double)(length)/((double)sizePruning*(double)Data.getNumRows());
+							} else {
+								rueckgabe[i]=Integer.MAX_VALUE;
+								for (int j=0;j<subsets;j++) {
+									double standardisedFitness=polynomFulfillment.cases[j]/(double)polynomFulfillment.casesInData[j]+polynomFulfillment.controls[j]/(double)polynomFulfillment.controlsInData[j]-(double)(length)/((double)sizePruning*(double)Data.getNumRows());
+									if (standardisedFitness<rueckgabe[i]) rueckgabe[i]=standardisedFitness;																
+								}
+							}
+							break;						
+						}						
 					}
 				}
 				if (schedule.getCurrentGeneration()==1) {
 					//System.out.println(System.currentTimeMillis()+";"+schedule.getCurrentGeneration()+";"+bfg.evaluate1s()+";"+bfg.evaluate0s()+";"+length+";"+bfg.toString());	
-				}
-				if (objectivesToFulfill==0 && length<bestLengthFound) {
-					bestLengthFound=length;
-					//System.out.println(System.currentTimeMillis()+";"+schedule.getCurrentGeneration()+";"+bfg.evaluate1s()+";"+bfg.evaluate0s()+";"+length+";"+bfg.toString());	
+				}				
+				if (objectivesToFulfill==0) {
+					predictingModelFound=true;
+					if (length<bestLengthFound) {
+						bestLengthFound=length;
+						//System.out.println(System.currentTimeMillis()+";"+schedule.getCurrentGeneration()+";"+bfg.evaluate1s()+";"+bfg.evaluate0s()+";"+length+";"+bfg.toString());							
+					}
 				}
 			} else {
 				rueckgabe[0]=Integer.MIN_VALUE;
@@ -738,6 +772,20 @@ public class GenericPareto extends AbstractStaticMultiObjectiveFitnessFunction i
 	 */
 	public void setParetoObjectiveForMonomials(int[] paretoObjectiveForMonomials) {
 		this.paretoObjectiveForMonomials = paretoObjectiveForMonomials;
+	}
+
+	/**
+	 * @return the predictingModelFound
+	 */
+	public boolean isPredictingModelFound() {
+		return predictingModelFound;
+	}
+
+	/**
+	 * @param predictingModelFound the predictingModelFound to set
+	 */
+	public void setPredictingModelFound(boolean predictingModelFound) {
+		this.predictingModelFound = predictingModelFound;
 	}
 	
 /*	public Double getPropertyControlPruning() {

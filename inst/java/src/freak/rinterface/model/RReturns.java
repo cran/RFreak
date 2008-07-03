@@ -25,6 +25,7 @@ import freak.module.searchspace.logictree.DNFTree;
  */
 public class RReturns {
 	
+private static int generationFound=Integer.MAX_VALUE;
 private static double bestMCRinTestData=Double.MAX_VALUE;
 private static Vector<IndividualSummary> allMCRinTestData=new Vector<IndividualSummary>();
 private static Vector<IndividualSummary> allMCRinTrainingData=new Vector<IndividualSummary>();
@@ -45,6 +46,7 @@ private static DNFTree[] allTrees;
 
 public static void clear() {
 	Freak.debug("Clearing stored return parameters",4);
+	generationFound=Integer.MAX_VALUE;
 	bestMCRinTestData=Double.MAX_VALUE;
 	allMCRinTestData=new Vector<IndividualSummary>();
 	allMCRinTrainingData=new Vector<IndividualSummary>();
@@ -94,12 +96,18 @@ public static double[] getBestMCRinTestDataWRTTraining() {
 	double bestMCRLength=Double.MAX_VALUE;	
 	double bestMCRTrain=Double.MAX_VALUE;
 	double bestMCR=Double.MAX_VALUE;
+	double bestTrainGecco1=Double.MAX_VALUE;
+	double bestMCRGecco1=Double.MAX_VALUE;
+	double bestTrainGecco2=Double.MAX_VALUE;
+	double bestMCRGecco2=Double.MAX_VALUE;
 	Iterator<IndividualSummary> it1=allMCRinTrainingData.iterator();
 	Iterator<IndividualSummary> it2=allMCRinTestData.iterator();
 	while (it1.hasNext() && it2.hasNext()) {
 		IndividualSummary trainIndividual = it1.next();
 		IndividualSummary testIndividual = it2.next();
 		double trainMCR=trainIndividual.getMcr();
+		double trainGecco1=trainIndividual.getGeccoFit1();
+		double trainGecco2=trainIndividual.getGeccoFit2();
 		double testMCR=testIndividual.getMcr();
 		if (trainIndividual.getLength()>lastLength) {
 			if (lastLength>0) {
@@ -143,13 +151,26 @@ public static double[] getBestMCRinTestDataWRTTraining() {
 			} else {
 				testBitsets.add(testIndividual.getValueBitset());
 			}
-		}				
+		}	
+		
+		
 		if (trainMCR<bestMCRTrain) {
 			bestMCRTrain=trainMCR;
 			bestMCR=testMCR;
 			setBestBitSet(testIndividual.getValueBitset(), testIndividual.getRows());
 			setResultBitSet(testIndividual.getResultBitset(),testIndividual.getRows());
-		}	
+		}
+
+		if (trainGecco1<bestTrainGecco1) {
+			bestTrainGecco1=trainGecco1;
+			bestMCRGecco1=testMCR;
+		}
+
+		if (trainGecco2<bestTrainGecco2) {
+			bestTrainGecco2=trainGecco2;
+			bestMCRGecco2=testMCR;
+		}
+
 		if (!it1.hasNext()) {
 			lengths.add(new Integer(lastLength));
 			bestMCRForLength.add(new Double(bestMCRLength));
@@ -207,7 +228,7 @@ public static double[] getBestMCRinTestDataWRTTraining() {
 			mcrOfChosen=testMCR;
 		}
 	}
-	double[] returnValue= {bestMCR,mcrOfChosen};
+	double[] returnValue= {bestMCR,mcrOfChosen,bestMCRGecco1,bestMCRGecco2};
 	return returnValue;
 }
 /**
@@ -379,6 +400,18 @@ public static void setAllTrees(DNFTree[] allTrees) {
 public static void setAllTrees(Vector<DNFTree> allTrees) {
 	RReturns.allTrees= new DNFTree[allTrees.size()];
 	allTrees.copyInto(RReturns.allTrees);
+}
+/**
+ * @return the generationFound
+ */
+public static int getGenerationFound() {
+	return generationFound;
+}
+/**
+ * @param generationFound the generationFound to set
+ */
+public static void setGenerationFound(int generationFound) {
+	RReturns.generationFound = generationFound;
 }
 
 }
