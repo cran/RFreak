@@ -1,14 +1,15 @@
 \name{predict-method}
 \alias{predict-method}
-\alias{predict}
+%\alias{predict,ANY-method}
 \alias{predict,GPAS-method}
 \title{Predict using new predictors}
 \description{
 Takes an individual from a GPAS object and predicts on the basis of new predictors.
 }
 \usage{
-## S4 method for signature 'GPAS': 
-predict(object,individual,preds)
+\S4method{predict}{GPAS}(object,individual,preds)
+%## S4 method for signature 'GPAS': 
+%predict(object,individual,preds)
 }
 \arguments{
   \item{object}{Object of class GPAS}

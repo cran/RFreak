@@ -1,6 +1,6 @@
 Package: RFreak
-Version: 0.2-2
-Date: 2008-07-03
+Version: 0.2-3
+Date: 2008-08-20
 Title: R/FrEAK interface
 Author: Robin Nunkesser <Robin.Nunkesser@tu-dortmund.de>
 Maintainer: Robin Nunkesser <Robin.Nunkesser@tu-dortmund.de>
@@ -10,4 +10,4 @@ Description: An R interface to a modified version of the Free Evolutionary Algor
 LazyLoad: yes
 License: GPL (>= 2)
 SystemRequirements: Java (>= 5.0)
-Packaged: Thu Jul  3 17:35:41 2008; robin
+Packaged: Wed Aug 20 15:16:42 2008; nunkesser

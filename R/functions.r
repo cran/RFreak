@@ -82,7 +82,7 @@ setMethod("show","ltsEA",
 
 setClass("GPAS", representation("FreakReturn",trees="list"))
 
-setGeneric("predict",function(object,individual,preds) standardGeneric("predict"))
+setGeneric("predict",useAsDefault=getExportedValue("stats","predict"))
 setMethod("predict","GPAS",
 	function(object,individual,preds) {
 		resp<-rep(0,dim(preds)[1])
