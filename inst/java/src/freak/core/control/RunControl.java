@@ -12,6 +12,8 @@ package freak.core.control;
 
 import java.util.*;
 
+import freak.Freak;
+
 /**
  * @author  Stefan
  */
@@ -22,7 +24,7 @@ public class RunControl {
 	private Schedule activeSchedule;
 	private Replay replay;
 	
-	private FreakSimulationThread simulationThread = new FreakSimulationThread();
+	private volatile FreakSimulationThread simulationThread;
 	private Actions.Action lastProcessed;
 	private boolean programTerminationRequest;
 	
@@ -33,6 +35,7 @@ public class RunControl {
 	
 	
 	public RunControl(StateListener gui) {
+		simulationThread= new FreakSimulationThread();
 		this.stateListener = gui;
 		simulationThread.start();
 	}
@@ -53,9 +56,13 @@ public class RunControl {
 
 	private void mainLoop() {
 		waitForRequests();
-		while(true) {
+		Thread thisThread = Thread.currentThread();
+		while(simulationThread == thisThread) {
 			processRequests();
-			if (programTerminationRequest) return;
+			if (programTerminationRequest) {
+				simulationThread=null;
+				return;
+			}
 			
 			updateTargetStatus();
 			if (allTargetsReached()) {

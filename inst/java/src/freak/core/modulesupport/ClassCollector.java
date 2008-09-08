@@ -5,7 +5,7 @@
  * 
  * This file is a modification of the original file distributed with
  * FrEAK (http://sourceforge.net/projects/freak427/).
- * Last modification: $Date: 2008/07/03 18:06:51 $
+ * Last modification: $Date: 2008/09/08 14:42:48 $
  */
 
 package freak.core.modulesupport;

@@ -72,7 +72,7 @@ public class LogRegInterface implements StateListener {
 	private long lastSave;
 	private long saveInterval;
 	
-	private boolean terminated=false;
+	private volatile boolean terminated=false;
 
 	public LogRegInterface(File loadFile, File saveFile, File[] tempFiles, long saveInterval) {
 		this.loadFile = loadFile;
@@ -124,7 +124,7 @@ public class LogRegInterface implements StateListener {
 //			runControlFromScratch.request(new Actions.StartAction());
 			// runControlFromCopying.request(new Actions.StartAction());
 		}
-		while ((launchedFromR) && (!terminated));		
+		while ((launchedFromR) && (!terminated));
 	}
 
 	public Schedule testScheduleCopying(Schedule aSchedule) {
@@ -389,10 +389,12 @@ public class LogRegInterface implements StateListener {
 	}
 	
 	public void terminated(Action lastProcessedBeforeTermination) {		
-		Freak.debug("Bye", 4);
+		Freak.debug("Bye Bye", 4);
 		terminated=true;
 		// Forcibly stop event queue
 		if(launchedFromR){
+			runControl=null;
+				//System.exit(0);
 			//do nothing, ie. do not call System.exit(0)
 		}else{ //terminate JVM
 			System.exit(0);
