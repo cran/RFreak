@@ -45,7 +45,7 @@ The function \code{robreg.evol} returns an object of class "evolreg". This objec
   The first four methods minimize some function of the sorted squared
   residuals. For methods \code{"lqs"} and \code{"lms"} it is the
   \code{quantile} squared residual, and for \code{"lts"} (\code{"lts"}) it is the sum
-  of the \code{quantile} smallest squared (absolute) residuals. \code{"lqd"} minimizes the $h \choose 2$ smallest of the $n \choose 2$ absolute residual differences.   
+  of the \code{quantile} smallest squared (absolute) residuals. \code{"lqd"} minimizes approximately the quartile of the absolute residual differences.   
 
 }
 
