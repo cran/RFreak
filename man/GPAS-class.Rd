@@ -23,6 +23,6 @@ Class \code{"FreakReturn"}, directly.
 }
 \author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
 \seealso{
-  \code{"\link[predict-method]{predict}"}, \code{"\linkS4class{FreakReturn}"}, \code{\link{GPASDiscrimination}}, \code{\link{GPASInteractions}}
+  \code{"\linkS4class{FreakReturn}"}, \code{\link{GPASDiscrimination}}, \code{\link{GPASInteractions}}
 }
 \keyword{classes}

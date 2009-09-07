@@ -93,7 +93,7 @@ setMethod("predict","GPAS",
 		for (i in 1:(dim(preds)[[2]]-1)) {
 			columnNames<-c(columnNames,paste("SNP",as.character(i),sep=""))
 		} 				
-		trainingDataObject <- .jnew("freak/module/searchspace/logictree/RData",.jarray(preds),.jarray(dim(preds)),.jarray(columnNames));
+		trainingDataObject <- .jnew("freak/module/searchspace/logictree/RData",.jarray(as.vector(preds)),.jarray(dim(preds)),.jarray(as.vector(columnNames)));
 		.jcall("freak/module/searchspace/logictree/Data", "V", "setTrainingData", trainingDataObject);	
 		.jcall("freak/module/searchspace/logictree/Data", "V", "setRData", trainingDataObject);
 		.jcall("freak/module/searchspace/logictree/Data", "V", "setRMode");	   		
@@ -136,13 +136,14 @@ setMethod("predict","GPAS",
 }
 
 robreg.evol <- function(x,y,method=c("lts","lta","lms","lqs","lqd"), quantile=NULL,adjust=FALSE,runs=1,generations=10000,duration=0){
+	if (.jcall("freak/rinterface/control/RFreak","Z", "isStartable")) { 		
 		method<-match.arg(method)
 		.checkData(y,x,allowNegative=TRUE)
 		.jcall("freak/module/searchspace/PointSet","V","setPointsSetFromR",as.logical(TRUE));		
 		y<-as.matrix(y)
 		x<-as.matrix(x)
 		matrix<-cbind(y,x)
-		data <- .jarray(matrix);
+		data <- .jarray(as.vector(matrix));
 		dataDim <- .jarray(dim(matrix));
 		dataObject <- .jnew("freak/rinterface/model/RDoubleMatrix",data,dataDim);	
 		if (is.null(quantile)) quantile=floor((sum(dim(matrix))+1)/2.0)
@@ -156,6 +157,9 @@ robreg.evol <- function(x,y,method=c("lts","lta","lms","lqs","lqd"), quantile=NU
 		best<-.jcall("freak/rinterface/model/RReturns", "[I", "getChosenIndices")+1;
 		.jcall("freak/module/searchspace/PointSet","V","setPointsSetFromR",as.logical(TRUE));			
 		return(new("evolreg",summary=returnedFrame,best=best,coefficients=coefficients,crit=crit))	
+	} else {
+		cat("\nRFreak does not work with Java HotSpot(TM) Server VM at the moment.\n")
+	}	
 }
 
 ltsreg.evol <- function(...)
@@ -203,6 +207,7 @@ LTSevol <- function(y,x,h=NULL,adjust=FALSE,runs=1,generations=10000){
 }
 
 GPASInteractions <- function(resp,preds,runs=1,generations=10000,savegraph = "interactions.dot",occurences=10,ratio=0.1){
+	if (.jcall("freak/rinterface/control/RFreak","Z", "isStartable")) { 		
 		.checkData(resp,preds)
 		preds <- cbind(resp,preds); 
 	    preds = matrix(as.integer(preds), dim(preds)[1], dim(preds)[2]);    	
@@ -210,7 +215,7 @@ GPASInteractions <- function(resp,preds,runs=1,generations=10000,savegraph = "in
 		for (i in 1:(dim(preds)[[2]]-1)) {
 			columnNames<-c(columnNames,paste("SNP",as.character(i),sep=""))
 		} 				
-		trainingDataObject <- .jnew("freak/module/searchspace/logictree/RData",.jarray(preds),.jarray(dim(preds)),.jarray(columnNames));
+		trainingDataObject <- .jnew("freak/module/searchspace/logictree/RData",.jarray(as.vector(preds)),.jarray(dim(preds)),.jarray(as.vector(columnNames)));
 		.jcall("freak/module/searchspace/logictree/Data", "V", "setTrainingData", trainingDataObject);	
 		.jcall("freak/module/searchspace/logictree/Data", "V", "setRData", trainingDataObject);
 		.jcall("freak/module/searchspace/logictree/Data", "V", "setRMode");	   		
@@ -223,9 +228,13 @@ GPASInteractions <- function(resp,preds,runs=1,generations=10000,savegraph = "in
 		returnedTrees<-.jcall("freak/rinterface/model/RReturns", "[Lfreak/module/searchspace/logictree/DNFTree;", "getAllTrees")
 		.jcall("freak/module/searchspace/logictree/Data", "V", "clear");		
 		return(new("GPAS",summary=returnedFrame,trees=returnedTrees))	
+	} else {
+		cat("\nRFreak does not work with Java HotSpot(TM) Server VM at the moment.\n")
+	}	
 }
 
 GPASDiscrimination <- function(resp.train,preds.train,resp.test=NULL, preds.test=NULL, runs=1,generations=10000){
+	if (.jcall("freak/rinterface/control/RFreak","Z", "isStartable")) { 		
 		.checkData(resp.train,preds.train)
 		preds.train <- cbind(resp.train,preds.train); 
 		preds.train = matrix(as.integer(preds.train), dim(preds.train)[1], dim(preds.train)[2]);
@@ -233,7 +242,7 @@ GPASDiscrimination <- function(resp.train,preds.train,resp.test=NULL, preds.test
 		for (i in 1:(dim(preds.train)[[2]]-1)) {
 			columnNames<-c(columnNames,paste("SNP",as.character(i),sep=""))
 		} 
-		trainingDataObject <- .jnew("freak/module/searchspace/logictree/RData",.jarray(preds.train),.jarray(dim(preds.train)),.jarray(columnNames));
+		trainingDataObject <- .jnew("freak/module/searchspace/logictree/RData",.jarray(as.vector(preds.train)),.jarray(dim(preds.train)),.jarray(as.vector(columnNames)));
 		.jcall("freak/module/searchspace/logictree/Data", "V", "setTrainingData", trainingDataObject);	
 		if (!(is.null(resp.test)||is.null(preds.test))) {
 			.checkData(resp.test,preds.test)	
@@ -243,7 +252,7 @@ GPASDiscrimination <- function(resp.train,preds.train,resp.test=NULL, preds.test
 			for (i in 1:(dim(preds.test)[[2]]-1)) {
 				columnNames1<-c(columnNames1,paste("SNP",as.character(i),sep=""))
 			} 			
-			testDataObject <- .jnew("freak/module/searchspace/logictree/RData",.jarray(preds.test),.jarray(dim(preds.test)),.jarray(columnNames1));				
+			testDataObject <- .jnew("freak/module/searchspace/logictree/RData",.jarray(as.vector(preds.test)),.jarray(dim(preds.test)),.jarray(as.vector(columnNames1)));				
 			.jcall("freak/module/searchspace/logictree/Data", "V", "setTestData", testDataObject);					
 		}		
 		.jcall("freak/module/searchspace/logictree/Data", "V", "setRData", trainingDataObject);	
@@ -257,12 +266,16 @@ GPASDiscrimination <- function(resp.train,preds.train,resp.test=NULL, preds.test
 		returnedTrees<-.jcall("freak/rinterface/model/RReturns", "[Lfreak/module/searchspace/logictree/DNFTree;", "getAllTrees")
 		.jcall("freak/module/searchspace/logictree/Data", "V", "clear");		
 		return(new("GPAS",summary=returnedFrame,trees=returnedTrees))	
+	} else {
+		cat("\nRFreak does not work with Java HotSpot(TM) Server VM at the moment.\n")
+	}	
 }	
 
 launchScheduleEditor <- function(saveTo="schedule.freak",load=NULL){
+	if (.jcall("freak/rinterface/control/RFreak","Z", "isStartable")) { 		
 		if ((!is.null(Sys.info())) && (Sys.info()[1]=="Darwin")) {
 			if (is.null(load)) load<-"NULL"
-			system(paste("java -jar ",system.file("java", "rfreak-0.2-4.jar", package = "RFreak")," --edit-schedule='",load,"' --save-edited-schedule='",saveTo,"'",sep=""))
+			system(paste("java -jar ",system.file("java", "rfreak-0.2-2.jar", package = "RFreak")," --edit-schedule='",load,"' --save-edited-schedule='",saveTo,"'",sep=""))
 		} else {
 			.jcall("freak/gui/scheduleeditor/ScheduleEditor", "V", "setRSaveTo",as.character(saveTo));
 			if (is.null(load)) {
@@ -271,14 +284,21 @@ launchScheduleEditor <- function(saveTo="schedule.freak",load=NULL){
 			 	.jcall("freak/rinterface/control/RFreak", "V", "showScheduleEditor",as.character(load));		 
 			 }
 		}
+	} else {
+		cat("\nRFreak does not work with Java HotSpot(TM) Server VM at the moment.\n")
+	}	
 }
 
 executeSchedule <- function(freakfile="schedule.freak"){
+	if (.jcall("freak/rinterface/control/RFreak","Z", "isStartable")) { 		
 		.jcall("freak/rinterface/control/LogRegInterface", "V", "setScheduleWillBeSetByR",as.logical(FALSE));  
 		cmdargs = .jarray(c(freakfile));
 		.jcall("freak/rinterface/control/RFreak","V", "rMain", cmdargs);
 		returnedFrame<-	.extractDataFrame(.jcall("freak/rinterface/model/RReturns", "Lfreak/rinterface/model/SDataFrame;", "getDataFrame"))
 		return(new("FreakReturn",summary=returnedFrame))	
+	} else {
+		cat("\nRFreak does not work with Java HotSpot(TM) Server VM at the moment.\n")
+	}	
 }
 
 .testInt<-function() {
