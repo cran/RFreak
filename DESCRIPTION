@@ -1,6 +1,6 @@
 Package: RFreak
-Version: 0.2-6
-Date: 2009-09-07
+Version: 0.2-7
+Date: 2009-12-11
 Title: R/FrEAK interface
 Author: Robin Nunkesser <Robin.Nunkesser@tu-dortmund.de>
 Maintainer: Robin Nunkesser <Robin.Nunkesser@tu-dortmund.de>
@@ -15,6 +15,6 @@ Description: An R interface to a modified version of the Free
 LazyLoad: yes
 License: GPL (>= 2)
 SystemRequirements: Java (>= 5.0)
-Packaged: 2009-11-07 19:44:37 UTC; robin
+Packaged: 2009-12-11 20:37:35 UTC; robin
 Repository: CRAN
-Date/Publication: 2009-11-08 10:24:18
+Date/Publication: 2009-12-13 09:46:13

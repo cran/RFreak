@@ -584,24 +584,27 @@ public class ScheduleConfigurator {
 				generationCount.setPropertyCount(new Integer(generationCountStop));
 				generationCount.testSchedule(schedule);
 				generationCount.initialize();
-				generationCount.createEvents();
 				
 				PredictingModelFound predictionFound = new PredictingModelFound(schedule);
 				predictionFound.testSchedule(schedule);
 				predictionFound.initialize();
-				predictionFound.createEvents();
 		
 				StoppingCriterion[] stoppingCriteria = null;
 				if ((generationCountStop>0)&&(stoppingCriterion)) {
 					stoppingCriteria = new StoppingCriterion[2];
 					stoppingCriteria[0] = generationCount;	
-					stoppingCriteria[1] = predictionFound;	
+					generationCount.createEvents();
+					stoppingCriteria[1] = predictionFound;
+					predictionFound.createEvents();
+
 				} else if(generationCountStop>0) {
 					stoppingCriteria = new StoppingCriterion[1];
-					stoppingCriteria[0] = generationCount;						
+					stoppingCriteria[0] = generationCount;
+					generationCount.createEvents();
 				} else {
 					stoppingCriteria = new StoppingCriterion[1];
-					stoppingCriteria[0] = predictionFound;											
+					stoppingCriteria[0] = predictionFound;
+					predictionFound.createEvents();
 				}				
 				schedule.setStoppingCriteria(stoppingCriteria);
 			}

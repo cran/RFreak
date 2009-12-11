@@ -138,7 +138,7 @@ public class VariableCompareNode implements OperatorNode, Serializable {
 	 * row is needed for the evaluation of the inputNode-Child.
 	 * @param row The row of the function table for which the tree should be evaluated. 
 	 */
-	public boolean getValue(int[] row){
+	public boolean getValue(byte[] row){
 		int i = input.getValue(row);
 		int j = constant.getValue(row);		
 //		boolean a = ( (input.getValue(row) == constant.getValue()) && equality);

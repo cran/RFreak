@@ -27,6 +27,7 @@ public class StaticCompareNode implements OperatorNode, Serializable {
 
 	private StaticInputNode input;
 
+	private int index;
 	private boolean less;
 	private boolean equal;
 	private boolean greater;
@@ -46,7 +47,7 @@ public class StaticCompareNode implements OperatorNode, Serializable {
 	 * @param rows    input table
 	 */
 	public StaticCompareNode(StaticConstantNode cn, StaticInputNode in, boolean less,
-			boolean equal, boolean greater,int numRows, int[][] rows) {
+			boolean equal, boolean greater,int numRows, byte[][] rows) {
 		constant = cn;
 		input = in;
 		this.less = less;
@@ -83,7 +84,7 @@ public class StaticCompareNode implements OperatorNode, Serializable {
 	 * row is needed for the evaluation of the inputNode-Child.
 	 * @param row The row of the function table for which the tree should be evaluated. 
 	 */
-	public boolean getValue(int[] row){
+	public boolean getValue(byte[] row){
 		int i = input.getValue(row);
 		int j = constant.getValue(row);		
 		boolean a = ( equal   && (i == j));
@@ -97,7 +98,7 @@ public class StaticCompareNode implements OperatorNode, Serializable {
 	 * @param numRows number of rows in the input table
 	 * @param rows    input table
 	 */
-	private void createBitset(int numRows, int[][] rows) {
+	private void createBitset(int numRows, byte[][] rows) {
 //		System.out.println("Update with "+numRows+"="+rows.length+" Data rows");
 		if (numRows != rows.length) {
 			return;			
@@ -193,10 +194,19 @@ public class StaticCompareNode implements OperatorNode, Serializable {
 	 StaticInputNode in = (StaticInputNode)input.clone();
 	 // cloning bitsets creates a real copy according to java api
 	 StaticCompareNode com = new StaticCompareNode(cn,in,less, equal, greater, (BitSet)fulfilling.clone());
+	 com.setIndex(this.index);
 	 return com;
 	}
 
 	public void updateBitset() {
 		createBitset(Data.getNumRows(),Data.getValues());
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }

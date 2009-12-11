@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." default="build" name="RFrEAK">
 
-	<property name="version" value="0.2-4"/>
+	<property name="version" value="0.2-5"/>
 	<property name="src" value="src"/>
 	<property name="test" value="test"/>
 	<property name="build" value="bin"/>
@@ -36,7 +36,7 @@
 			<manifest>
 				<attribute name="Built-By" value="${user.name}"/>
 				<attribute name="Main-Class" value="freak.Freak"/>
-				<attribute name="Class-Path" value="${lib}/colt.jar ${lib}/jdom.jar ${lib}/jgraph.jar ${lib}/jlfgr-1_0.jar ${lib}/bsh-2.0b1.jar ${lib}/jargs.jar ${lib}/jicos-system.jar ${lib}/ostermillerutils_1_04_03_for_kaffe.jar ${resource}/"/>
+				<attribute name="Class-Path" value="${lib}/colt.jar ${lib}/jdom.jar ${lib}/jgraph.jar ${lib}/jlfgr-1_0.jar ${lib}/bsh-2.0b1.jar ${lib}/jargs.jar ${lib}/jicos-system.jar ${lib}/ostermillerutils_1_07_00.jar ${resource}/"/>
 			</manifest>
 		</jar>
 	</target>

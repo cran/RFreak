@@ -14,7 +14,7 @@ public interface AtomicNode extends Node {
 	/**
 	 * Returns the integer value of this atomic node.
 	 */
-	public int getValue(int[] row);
+	public int getValue(byte[] row);
 	
 	/**
 	 * Clones this atomicNode.

@@ -34,6 +34,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.filechooser.FileFilter;
 
+import freak.Freak;
 import freak.core.control.Actions;
 import freak.core.control.BatchProcessor;
 import freak.core.control.GenerationIndex;
@@ -404,11 +405,15 @@ public class GPASDialog extends JDialog implements StateListener {
 		return jButton1;
 	}
 
-	public void asynchroneousFeedback(Schedule schedule, Replay replay) {		
-		GenerationIndex now = schedule.getCurrentTimeIndex();
-		int currentGeneration = now.generation;
-		int currentRun = now.run;
-		jProgressBar.setValue(currentGeneration+(currentRun-1)*generations);
+	public void asynchroneousFeedback(Schedule schedule, Replay replay) {
+		if (schedule!=null) {
+			GenerationIndex now = schedule.getCurrentTimeIndex();
+			int currentGeneration = now.generation;
+			int currentRun = now.run;
+			jProgressBar.setValue(currentGeneration+(currentRun-1)*generations);
+		} else {
+			jProgressBar.setValue(0);
+		}
 	}
 
 	public void simulationCompleted(Action lastProcessed) {

@@ -185,7 +185,8 @@ public class Count extends AbstractPostprocessor {
 			OperatorNodeVector literalVector=monomial.getChildren();
 			iLit = literalVector.iterator();			
 			while (iLit.hasNext()) {			
-				count[Data.getIndexOfCompareNode((StaticCompareNode)iLit.next())]++;
+				count[((StaticCompareNode)iLit.next()).getIndex()]++;
+				//count[Data.getIndexOfCompareNode((StaticCompareNode)iLit.next())]++;
 			}
 		}		
 		return count;
@@ -193,8 +194,8 @@ public class Count extends AbstractPostprocessor {
 	
 	private void searchMostCommon(OperatorNodeVector monomialsVector,countNode node,int child,int depth) {
 		// count which literal is the most common in the monomialsVector
+		Freak.debug(" Determine most common", 5);
 		int [] count=countOccurences(monomialsVector);
-		
 		
 		int highestCount=0;
 		int indexChosen=0;
@@ -204,6 +205,8 @@ public class Count extends AbstractPostprocessor {
 				indexChosen=i;
 			}
  		}
+		Freak.debug("Most common: "+Data.getCompareNode(indexChosen).toString(), 5);
+		
 		if ((highestCount>=minCount) && ((double)highestCount/(double)node.getCount()>=minPercent)){
 			// construct a vector with all monomials containing the most common literal and a vector with the remaining monomials
 			OperatorNodeVector monomialsWithMCL = new OperatorNodeVector();
@@ -216,7 +219,8 @@ public class Count extends AbstractPostprocessor {
 				Iterator iLit = literalVector.iterator();
 				while (iLit.hasNext()) {			
 					StaticCompareNode literal=(StaticCompareNode)iLit.next();
-					if (indexChosen==Data.getIndexOfCompareNode(literal)) {
+					if (indexChosen==literal.getIndex()) {
+//					if (indexChosen==Data.getIndexOfCompareNode(literal)) {
 						withMCL=true;
 						iLit.remove();
 	//					monomial.deleteChild(literal);
@@ -245,6 +249,7 @@ public class Count extends AbstractPostprocessor {
 	}
 	
 	public void analyse(){
+		Freak.debug("-------------------Extract Monomials-----------------------",3);
 		OperatorNodeVector monomials= this.extractMonomials((IndividualList) this.getIndividuals());
 		Freak.debug("-------------------Monomials-----------------------",3);
 		if (monomials.size()>0) {
@@ -252,6 +257,8 @@ public class Count extends AbstractPostprocessor {
 			
 //			BooleanFunctionGenotype rootBfgNewOrder = new BooleanFunctionGenotype(((BooleanFunctionGenotype) this.getIndividuals().getIndividual(0).getGenotype()).getInputFilePath(),((BooleanFunctionGenotype) this.getIndividuals().getIndividual(0).getGenotype()).getSchedule());
 			countTree result = new countTree(rootBfg,monomials.size());
+			Freak.debug("-------------------Search most common-----------------------",3);
+			Freak.setDebugLevel(5);
 			searchMostCommon(monomials,result.getRoot(),1,1);
 			Freak.debug(result.getRoot().toString(),5);
 			Freak.debug("-------------------Graph Erzeugung-----------------------",3);

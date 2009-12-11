@@ -39,6 +39,7 @@ public class PredictingModelFound extends AbstractGenerationStoppingCriterion {
 		if (gp.isPredictingModelFound()) {
 			RReturns.setGenerationFound(getSchedule().getCurrentGeneration());			
 			stopRun();
+			gp.setPredictingModelFound(false);
 		}
 	}
 

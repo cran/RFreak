@@ -18,7 +18,7 @@ import freak.module.searchspace.PointSetGenotype;
 public abstract class AbstractRobustRegressionFitness extends AbstractFitnessFunction implements Configurable {
 
 	protected int[] chosenIndices=null;
-	private double[] fittedHyperplane=null;
+	protected double[] fittedHyperplane=null;
 
 	protected int offset = -5000; // is used to divide
 	
@@ -80,7 +80,9 @@ public abstract class AbstractRobustRegressionFitness extends AbstractFitnessFun
 	protected void adjustHyperplane(Genotype genotype) {
 		// Adjust hyperplane by OLS
 		java.util.Arrays.sort(m_hResiduals);
+		PointSet.Point [] allPoints = ((PointSetGenotype)genotype).getPoints();
 		hyperPlane.computeParamLS(((PointSetGenotype)genotype).getPoints(), m_hResiduals, h);
+		hyperPlane.updateResiduals(m_hResiduals, allPoints);
 	}
 
 	protected void calculateResiduals(Genotype genotype) throws WrongNumberOfPointsException {

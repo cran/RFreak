@@ -59,7 +59,7 @@ public class VariableInputNode implements AtomicNode, Serializable {
 	 * Returns the value of the corresponding input variable in the given row.
 	 * @param row The row of the function table for which the tree should be evaluated. 
 	 */
-	public int getValue(int[] row){
+	public int getValue(byte[] row){
 		if (inputNumber >= 0 && inputNumber < row.length){
 			return row[inputNumber];
 		} else {

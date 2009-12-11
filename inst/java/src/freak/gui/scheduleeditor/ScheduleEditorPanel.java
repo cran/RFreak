@@ -5,7 +5,7 @@
  * 
  * This file is a modification of the original file distributed with
  * FrEAK (http://sourceforge.net/projects/freak427/).
- * Last modification: $Date: 2008/09/08 14:42:47 $
+ * Last modification: $Date: 2007/11/28 13:41:46 $
  */
 
 package freak.gui.scheduleeditor;

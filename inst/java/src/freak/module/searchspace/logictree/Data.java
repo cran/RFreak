@@ -15,6 +15,7 @@ import freak.module.searchspace.BooleanFunctionGenotype;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Iterator;
 
@@ -41,6 +42,7 @@ public class Data implements Serializable{
 
 	// Path to datasheet, file was found if valid is true
 	private static String path;
+	private static String lastPath;	
 	private static boolean valid = false;
 	private static boolean read = false;
 	
@@ -50,16 +52,16 @@ public class Data implements Serializable{
     private static int num1Rows;
     
 	// Array für Eingabedaten
-	private static int[][] values;
-	private static int[][] cvalues;
+	private static byte[][] values;
+	private static byte[][] cvalues;
 	// Array für Ergebnisspalte
 	private static boolean[] results;  // boolsche werte
 	private static BitSet resultsBS;
 	// Array of variable names
 	private static String[] names;
 	// Arrays: range of variables
-	private static int[] minValue;
-	private static int[] maxValue;
+	private static byte[] minValue;
+	private static byte[] maxValue;
 	
 	// OperatorNodeVector with all possible compareNode-subtrees
 	private static OperatorNodeVector compareSubtrees;
@@ -119,7 +121,7 @@ public class Data implements Serializable{
 	 * Returns null if no data is present.
 	 * @param nr number of needed row, numbering starting with 0
 	 */
-	public static int[] getRowByNumber(int nr){
+	public static byte[] getRowByNumber(int nr){
 		if (read) return values[nr]; else return null;
 	}
 
@@ -203,7 +205,7 @@ public class Data implements Serializable{
 	}
 
 	private static void setMaxAsThree(){
-		maxValue = new int[numVars];
+		maxValue = new byte[numVars];
 		for (int i = 0; i < numVars; i++){
 			maxValue[i] = 3;
 		}
@@ -212,6 +214,7 @@ public class Data implements Serializable{
 	private static void constructCompares(){
 		if (compareNodeSet!=1) exclude=false;
 		 compareSubtrees = new OperatorNodeVector();
+		 int index=0;
 		 for (int i = 0; i < numVars; i++){
 			 int minI = getMinValue(i);
 			 int maxI = getMaxValue(i);
@@ -222,29 +225,38 @@ public class Data implements Serializable{
 			 // <= max-1 entspricht != max
 			 // >= max entspricht = max
 			 
-			// switch (compareNodeSet)
-			 
+			// switch (compareNodeSet)			 
 			 for (int j = minI; j <= maxI ; j++){
 				 if ((!exclude) || (j!=minI+1)) {
 					 //=					 
 					 StaticConstantNode cn1 = new StaticConstantNode(j);
 					 StaticInputNode in1 = new StaticInputNode(i);
 					 StaticCompareNode com1 = new StaticCompareNode(cn1,in1,false,true,false,numRows,values);
+					 com1.setIndex(index++);
 					 Freak.debug(com1.toString(),4);
 					 compareSubtrees.add(com1);
+					 /*System.out.println(com1.getIndex()+": "+ com1.toString());
+					 System.out.println("Assigned Index"+compareSubtrees.indexOf(com1));
+					 System.out.println("Equal? "+compareSubtrees.get(com1.getIndex()).toString());*/
+
 
 					 //!=
 					 StaticConstantNode cn3 = new StaticConstantNode(j);
 					 StaticInputNode in3 = new StaticInputNode(i);
 					 StaticCompareNode com3 = new StaticCompareNode(cn3,in3,true, false, true,numRows,values);
+					 com3.setIndex(index++);
 					 Freak.debug(com3.toString(),4);
 					 compareSubtrees.add(com3);
+					 /*System.out.println(com3.getIndex()+": "+ com3.toString());
+					 System.out.println("Assigned Index"+compareSubtrees.indexOf(com3));
+					 System.out.println("Equal? "+compareSubtrees.get(com3.getIndex()).toString());*/
 
 					 //>=
 					 if (j != minI && j != minI+1 && j!=maxI && compareNodeSet<3){
 						 StaticConstantNode cn2 = new StaticConstantNode(j);
 						 StaticInputNode in2 = new StaticInputNode(i);
 						 StaticCompareNode com2 = new StaticCompareNode(cn2,in2,false, true, true,numRows,values);
+						 com2.setIndex(index++);
 						 Freak.debug(com2.toString(),4);
 						 compareSubtrees.add(com2);
 					 }
@@ -254,6 +266,7 @@ public class Data implements Serializable{
 						 StaticConstantNode cn4 = new StaticConstantNode(j);
 						 StaticInputNode in4 = new StaticInputNode(i);
 						 StaticCompareNode com4 = new StaticCompareNode(cn4,in4,true, true, false,numRows,values);
+						 com4.setIndex(index++);
 						 Freak.debug(com4.toString(),4);
 						 compareSubtrees.add(com4);
 					 }
@@ -358,6 +371,147 @@ public class Data implements Serializable{
 	 * 
 	 */
 	public static void readData() throws IOException{		
+		Freak.setDebugLevel(3);
+		if(csvDisable){
+			//do not read anything because Data has already been delivered by R
+		}else{ //normal execution of this method
+			if (!path.equals(lastPath)) {
+				byte[][] intValues;
+				FileReader in;
+				byte[] iresults;
+
+				// Try to open the datasheet
+				if (valid) {
+					try {
+						in = new FileReader(path);
+					} catch (IOException e) {
+						throw new IOException("Path to datasheet is no longer valid! ("+path+")");
+					}
+				} else {
+					throw new IOException("Before reading data, a valid path must be set! ("+path+")");
+				}
+
+				// File could be opened => read Data
+				// Read datasheet, seperated by semicolon
+	
+				CSVParser parser = new CSVParser(in, ';');		
+				ArrayList<byte[]> v = new ArrayList<byte[]>();
+				String[] line;
+				byte[] intLine;
+	
+				//	The first row only contains names of variables
+				if ((line = parser.getLine()) != null) {
+					numVars = line.length-1;
+			        names = new String[numVars];		
+			        for (int i = 1; i <= numVars; i++) {
+			        	names[i-1] = line[i];
+			        }			
+				}
+				
+				//	Reading rows
+	
+				int count=0; 
+				while((line = parser.getLine()) != null){
+					intLine=new byte[line.length];
+					intLine[0]=(byte) convertObjToInt(line[0]);
+					for (int i=1;i<line.length;i++) intLine[i]= (new Byte(line[i])).byteValue();
+					v.add(intLine);
+				 	Freak.debug("Line "+ ++count +" FK "+line[0]+" Value "+line[1],3);
+				}
+				intValues = new byte[v.size()][];
+				v.toArray(intValues);
+			
+				// Reading rows, saving result column to extra array               
+	
+				// Size of tabular
+				
+				numRows = intValues.length;
+				num1Rows = 0;
+				
+	
+				// read data must be converted to integer,
+				// the first column gives the result of the function
+				
+				values = new byte[numRows][];
+				cvalues = new byte[numVars][];
+				iresults = new byte[numRows];
+				results = new boolean[numRows];
+				maxValue = new byte[numVars];
+				minValue = new byte[numVars];
+				        
+				Freak.debug("Tabular has "+numRows+" rows and "+numVars+" variables.",2);
+
+			
+				// Eingelesene Daten in ints umwandeln
+				// und dabei die Beschriftungszeile entfernen
+				// sowie die ergebnisspalte abspalten
+		        
+				for (int i = 0; i < numVars; i++){
+					cvalues[i] = new byte[numRows];
+				}
+				lineValues=new BitSet(numRows);		
+		        for (int i = 0; i < numRows; i++){
+		        	values[i] = new byte[numVars];
+		        	iresults[i] = intValues[i][0];
+		        	results[i] = (iresults[i]==1);
+		           	lineValues.set(i,results[i]);        	
+		        	if (results[i]) num1Rows++;
+		        		        	
+		        	for (int j=1; j <= numVars; j++){
+		        		values[i][j-1] = intValues[i][j];
+		        		cvalues[j-1][i] = intValues[i][j];
+		        	}
+		        	
+		        }
+			
+		        for (int j = 0; j < numVars; j++){
+		            if (numRows == 0){
+		            	maxValue[j] = -1;
+		            	minValue[j] = -1;
+		            } else {
+		            	maxValue[j] = cvalues[j][0];
+		            	minValue[j] = cvalues[j][0];
+		            }
+		            for (int i = 0; i < numRows; i++){
+		            	if (cvalues[j][i] > maxValue[j]) maxValue[j] = cvalues[j][i];
+		            	if (cvalues[j][i] < minValue[j]) minValue[j] = cvalues[j][i];            	
+		            }
+		        }
+	        
+	       
+	  //      setMaxAsThree();
+		        read = true;
+		        lastPath=path;		        
+		        Freak.debug("0-Rows: "+getNum0Rows()+", 1-Rows: "+getNum1Rows(),2);
+		        constructCompares();
+		        Freak.debug("Compares are finished.",2);
+		        // construct a BitSet that contains the resultarray
+		        
+		        Freak.viewFilenameInTitle(path);
+		        
+		        resultsBS = new BitSet(results.length);
+		        for (int i = 0; i < results.length; i++){
+		        	if (results[i]) resultsBS.set(i);
+		        	else resultsBS.clear(i);
+		        }
+
+			}    
+	        
+	        
+		}
+			
+
+			
+			
+	}
+		
+	/**
+	 * Reads a datasheet from the current path if it is valid.
+	 * 
+	 */
+	public static void oldReadData() throws IOException{		
+//		Freak.setDebugLevel(3);
+
 		if(csvDisable){
 			//do not read anything because Data has already been delivered by R
 		}else{ //normal execution of this method
@@ -379,9 +533,26 @@ public class Data implements Serializable{
 		
 		// File could be opened => read Data
 		// Read datasheet, seperated by semicolon
-		svalues = CSVParser.parse(
+
+		System.out.println("Setting up Parser");
+		CSVParser parser = new CSVParser(in, ';');		
+		ArrayList<String[]> v = new ArrayList<String[]>();
+		String[] line;
+		System.out.println("Reading line");
+		int count=0; 
+		while((line = parser.getLine()) != null){
+			v.add(line);
+			System.out.println(++count);
+		}
+		svalues = new String[v.size()][];
+		v.toArray(svalues);
+
+		
+		// File could be opened => read Data
+		// Read datasheet, seperated by semicolon
+/*		svalues = CSVParser.parse(
 			    in, ';'
-			);
+			);*/
 		
 		
 		/*
@@ -405,12 +576,12 @@ public class Data implements Serializable{
 		// read data must be converted to integer,
 		// the first column gives the result of the function
 		
-		values = new int[numRows][];
-		cvalues = new int[numVars][];
+		values = new byte[numRows][];
+		cvalues = new byte[numVars][];
 		iresults = new int[numRows];
 		results = new boolean[numRows];
-		maxValue = new int[numVars];
-		minValue = new int[numVars];
+		maxValue = new byte[numVars];
+		minValue = new byte[numVars];
 		
 		// The first row only contains names of variables
         names = new String[numVars];		
@@ -419,6 +590,7 @@ public class Data implements Serializable{
         }
         
         Freak.debug("Tabular has "+numRows+" rows and "+numVars+" variables.",2);
+//        System.out.println("-------------------");
 		if (debug){
 			System.out.print("       ");
 			for (int i = 0; i < numVars; i++){
@@ -435,11 +607,12 @@ public class Data implements Serializable{
 		// sowie die ergebnisspalte abspalten
         
 		for (int i = 1; i <= numVars; i++){
-			cvalues[i-1] = new int[numRows];
+			cvalues[i-1] = new byte[numRows];
 		}
 		lineValues=new BitSet(numRows);		
         for (int i = 1; i <= numRows; i++){
-        	values[i-1] = new int[numVars];
+//        	System.out.println("Row"+i+" -------------------");
+        	values[i-1] = new byte[numVars];
 //        	iresults[i-1] = (new Integer(svalues[i][0])).intValue();
         	iresults[i-1] = convertObjToInt(svalues[i][0]);
         	results[i-1] = (iresults[i-1]==1);
@@ -451,8 +624,8 @@ public class Data implements Serializable{
         	}
         	
         	for (int j=1; j <= numVars; j++){
-        		values[i-1][j-1] = (new Integer(svalues[i][j])).intValue();
-        		cvalues[j-1][i-1] = (new Integer(svalues[i][j])).intValue();
+        		values[i-1][j-1] = (new Byte(svalues[i][j])).byteValue();
+        		cvalues[j-1][i-1] = (new Byte(svalues[i][j])).byteValue();
         		if (debug) {
         			System.out.print(" "+values[i-1][j-1]+" ");        			
         		}
@@ -480,7 +653,6 @@ public class Data implements Serializable{
         
         if (debug) {
         	for (int j = 0; j < numVars; j++){
-//        		System.out.print(names[j]);
     			System.out.print(names[j].charAt(names[j].length()-2));
     			System.out.print(names[j].charAt(names[j].length()-1)+" ");			
         	}
@@ -591,12 +763,12 @@ public class Data implements Serializable{
 		// read data must be converted to integer,
 		// the first column gives the result of the function
 		
-		values = new int[numRows][];
-		cvalues = new int[numVars][];
+		values = new byte[numRows][];
+		cvalues = new byte[numVars][];
 		iresults = new int[numRows];
 		results = new boolean[numRows];
-		maxValue = new int[numVars];
-		minValue = new int[numVars];
+		maxValue = new byte[numVars];
+		minValue = new byte[numVars];
 		
 		// The first row only contains names of variables
         names = new String[numVars];		
@@ -621,11 +793,11 @@ public class Data implements Serializable{
 		// sowie die ergebnisspalte abspalten
         
 		for (int i = 1; i <= numVars; i++){
-			cvalues[i-1] = new int[numRows];
+			cvalues[i-1] = new byte[numRows];
 		}
 		lineValues=new BitSet(numRows);		
         for (int i = 1; i <= numRows; i++){
-        	values[i-1] = new int[numVars];
+        	values[i-1] = new byte[numVars];
 //        	iresults[i-1] = (new Integer(svalues[i][0])).intValue();
         	iresults[i-1] = convertObjToInt(svalues[i][0]);
         	results[i-1] = (iresults[i-1]==1);
@@ -637,8 +809,8 @@ public class Data implements Serializable{
         	}
         	
         	for (int j=1; j <= numVars; j++){
-        		values[i-1][j-1] = (new Integer(svalues[i][j])).intValue();
-        		cvalues[j-1][i-1] = (new Integer(svalues[i][j])).intValue();
+        		values[i-1][j-1] = (new Byte(svalues[i][j])).byteValue();
+        		cvalues[j-1][i-1] = (new Byte(svalues[i][j])).byteValue();
         		if (debug) {
         			System.out.print(" "+values[i-1][j-1]+" ");        			
         		}
@@ -724,7 +896,7 @@ public class Data implements Serializable{
 	/**
 	 * @return the values
 	 */
-	public static int[][] getValues() {
+	public static byte[][] getValues() {
 		return values;
 	}
 

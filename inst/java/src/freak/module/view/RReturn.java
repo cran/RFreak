@@ -180,7 +180,7 @@ public class RReturn extends StdView {
 				if (individual.getGenotype() instanceof BooleanFunctionGenotype) {
 					allTrees.add(((BooleanFunctionGenotype)individual.getGenotype()).getDnfbaum());
 				}
-				if ((individual.getGenotype() instanceof BitStringGenotype) && (fitness instanceof AbstractStaticSingleObjectiveRobustRegressionFitness)) {
+/*				if ((individual.getGenotype() instanceof BitStringGenotype) && (fitness instanceof AbstractStaticSingleObjectiveRobustRegressionFitness)) {
 					double fitnessValue=((AbstractStaticSingleObjectiveRobustRegressionFitness)fitness).evaluate(individual, result.getBestIndividuals());
 					if (fitnessValue>this.bestValue) {
 						this.bestValue=fitnessValue;
@@ -188,7 +188,7 @@ public class RReturn extends StdView {
 						RReturns.setFittedHyperplane(((AbstractStaticSingleObjectiveRobustRegressionFitness)fitness).getFittedHyperplane());
 						RReturns.setChosenIndices(((AbstractStaticSingleObjectiveRobustRegressionFitness)fitness).getChosenIndices());
 					}
-				}
+				}*/
 			}
 
 		}

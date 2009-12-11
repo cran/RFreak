@@ -1,5 +1,6 @@
 package freak.module.fitness.pointset;
 
+import freak.rinterface.model.RReturns;
 import freak.core.control.Schedule;
 import freak.core.population.Genotype;
 import freak.core.population.Individual;
@@ -41,10 +42,15 @@ public abstract class AbstractStaticSingleObjectiveRobustRegressionFitness exten
 		if (interceptAdjust){
 			adjustIntercept(genotype);
 		}
-		
+		double evaluation=evaluateResiduals();
 		rememberChoosenParameters();
+		if (-evaluation<RReturns.getResidual()) {
+			RReturns.setResidual(-evaluation);
+			RReturns.setChosenIndices(chosenIndices);
+			RReturns.setFittedHyperplane(fittedHyperplane);
+		}
 		
-		return evaluateResiduals();
+		return evaluation;
 		
 	}
 

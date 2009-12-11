@@ -43,6 +43,8 @@ private static int[] chosenIndices=null;
 private static double[] fittedHyperplane=null;
 private static double residual=Double.MAX_VALUE;
 private static DNFTree[] allTrees;
+private static double majorityMcrTest;
+private static double majorityMcrTrain;
 
 public static void clear() {
 	Freak.debug("Clearing stored return parameters",4);
@@ -55,6 +57,9 @@ public static void clear() {
 	bestMCRTrainingForLength=new Vector<Double>();	
 	lengths=new Vector<Integer>();
 	dataFrame=new SDataFrame();
+	fittedHyperplane=null;
+	chosenIndices=null;
+	residual=Double.MAX_VALUE;
 }
 /**
  * @return the bestMCRinTestData
@@ -412,6 +417,18 @@ public static int getGenerationFound() {
  */
 public static void setGenerationFound(int generationFound) {
 	RReturns.generationFound = generationFound;
+}
+public static double getMajorityMcrTest() {
+	return majorityMcrTest;
+}
+public static void setMajorityMcrTest(double majorityMcrTest) {
+	RReturns.majorityMcrTest = majorityMcrTest;
+}
+public static double getMajorityMcrTrain() {
+	return majorityMcrTrain;
+}
+public static void setMajorityMcrTrain(double majorityMcrTrain) {
+	RReturns.majorityMcrTrain = majorityMcrTrain;
 }
 
 }

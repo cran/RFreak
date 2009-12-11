@@ -16,7 +16,7 @@ import java.io.Serializable;
 // and it has no intern maximum for the constant value.
 public class StaticConstantNode implements AtomicNode, Serializable{
 
-	private int value;
+	private byte value;
 	private int standardMaxValue = 3;
 
 	/**
@@ -26,7 +26,7 @@ public class StaticConstantNode implements AtomicNode, Serializable{
 	public StaticConstantNode(int value){
 //		 * If value is not greater than zero, a random constant in 1..3 will be set.
 //		if (value > 0){
-		this.value = value;
+		this.value = (byte)value;
 	//	} else {
 	//		this.value = Data.nextRandInt(standardMaxValue)+1;
 	//	}
@@ -36,15 +36,15 @@ public class StaticConstantNode implements AtomicNode, Serializable{
 	 * Returns the constant value of this node.
 	 * @uml.property  name="value"
 	 */
-	public int getValue(){
+	public byte getValue(){
 		return value;
 	}
 	
 	/**
 	 * Returns the constant value of this node.Independent from the value of row. 
 	 */
-	public int getValue(int[] row){
-		return getValue();
+	public int getValue(byte[] row){
+		return (int)getValue();
 	}
 	
 	// ************ overwritten java methods ******************************************************

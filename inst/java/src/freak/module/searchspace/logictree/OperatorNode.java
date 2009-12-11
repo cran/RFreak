@@ -16,7 +16,7 @@ public interface OperatorNode extends Node {
     /**
      * Evaluates the subtree starting at this Node acccording to the given row.
      */
-	public boolean getValue(int[] row);
+	public boolean getValue(byte[] row);
 	public int getSubtreeSize();
 	public BitSet getValueBitset();
 	public void updateBitset();

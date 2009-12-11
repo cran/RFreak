@@ -15,6 +15,7 @@ public class LQDOptimization extends AbstractStaticSingleObjectiveRobustRegressi
 	@Override
 	protected double evaluateResiduals() {
 		// TODO Auto-generated method stub
+		java.util.Arrays.sort(m_hResiduals);
 		int n = m_hResiduals.length;
 		
 		double [] v = new double [n];

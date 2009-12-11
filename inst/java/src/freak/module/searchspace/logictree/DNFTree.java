@@ -23,8 +23,8 @@ public class DNFTree implements Serializable {
 	
 	// Parameter für Zufallsentscheidungen 
     private final int maxPercent;
-	private final boolean emptyAndsForbidden; // wenn true, dann darf es keine AndNode ohne Kinder geben (sind immer true)
-	private final boolean emptyTreeForbidden; // wenn true, dann darf es keine OrNode ohne Kinder geben (sind immer false)
+	private boolean emptyAndsForbidden; // wenn true, dann darf es keine AndNode ohne Kinder geben (sind immer true)
+	private boolean emptyTreeForbidden; // wenn true, dann darf es keine OrNode ohne Kinder geben (sind immer false)
 	
 	private String inputFilePath;
 	
@@ -970,6 +970,14 @@ public class DNFTree implements Serializable {
 		OperatorNodeVector onv= this.getAllUsedAndNodes();
 		Iterator it=onv.iterator();
 		while (it.hasNext()) this.addBitSetToCount(((OperatorNode)it.next()).getValueBitset());
+	}
+
+	public void setEmptyAndsForbidden(boolean emptyAndsForbidden) {
+		this.emptyAndsForbidden = emptyAndsForbidden;
+	}
+
+	public void setEmptyTreeForbidden(boolean emptyTreeForbidden) {
+		this.emptyTreeForbidden = emptyTreeForbidden;
 	}
 
 }

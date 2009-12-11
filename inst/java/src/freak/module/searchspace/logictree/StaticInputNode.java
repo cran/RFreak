@@ -36,7 +36,7 @@ public class StaticInputNode implements AtomicNode, Serializable {
 	 * Returns -1 if the variable number is out of range of the row.
 	 * @param row The row of the function table for which the tree should be evaluated. 
 	 */
-	public int getValue(int[] row){
+	public int getValue(byte[] row){
 		if (inputNumber >= 0 && inputNumber < row.length){
 			return row[inputNumber];
 		} else {

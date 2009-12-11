@@ -61,7 +61,7 @@ public class VariableConstantNode implements AtomicNode, Serializable{
 	/**
 	 * Returns the constant value of this node.Independent from the value of row. 
 	 */
-	public int getValue(int[] row){
+	public int getValue(byte[] row){
 		return getValue();
 	}
 	

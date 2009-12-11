@@ -38,7 +38,7 @@ public class AndNode extends MultipleOperatorNode implements Serializable{
 	 * Needs row for the evaluation of inpudNodes deeper in the tree.
 	 * @param row The row of the function table for which the tree should be evaluated. 
 	 */
-	public boolean getValue(int[] row){
+	public boolean getValue(byte[] row){
 		boolean rueckgabe = true;
 		int size = children.size();
 	    for (int i = 0; i < size; i++){

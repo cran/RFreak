@@ -10,6 +10,12 @@ import freak.core.control.Schedule;
 import freak.core.modulesupport.Configurable;
 import freak.core.population.Genotype;
 import freak.core.searchspace.AbstractSearchSpace;
+import freak.module.searchspace.logictree.AndNode;
+import freak.module.searchspace.logictree.DNFTree;
+import freak.module.searchspace.logictree.Data;
+import freak.module.searchspace.logictree.OrNode;
+import freak.module.searchspace.logictree.StaticCompareNode;
+
 import java.io.Serializable;
 
 /**
@@ -99,4 +105,17 @@ public class BooleanFunction extends AbstractSearchSpace implements Configurable
 	public Genotype getRandomGenotype() {
 		return new BooleanFunctionGenotype(pathInputFile,schedule);
 	}
+	
+	public Genotype getLiteral(int index) {
+		DNFTree dnf=new DNFTree(new short[0],(short)0,(short)0,new OrNode(),3,100,false,false,pathInputFile, schedule, 0, false);
+		AndNode an = dnf.getEmptyAndNode();
+		StaticCompareNode cn = (StaticCompareNode) Data.getCompareNode(index).clone();
+		dnf.insertCompareNoAndInTreeCheck(an,cn);
+		dnf.insertAnd(an);
+		dnf.setEmptyAndsForbidden(true);
+		dnf.setEmptyTreeForbidden(true);
+		return new BooleanFunctionGenotype(dnf,schedule);
+	}
+	
+
 }
