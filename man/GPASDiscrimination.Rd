@@ -29,7 +29,7 @@ GPASDiscrimination(resp.train, preds.train, resp.test=NULL,
   \item{individual}{A string representation of the individual}
 }
 \references{R. Nunkesser, T. Bernholt, H. Schwender, K. Ickstadt, and I. Wegener (2007). Detecting High-Order Interactions of Single Nucleotide Polymorphisms Using Genetic Programming. \emph{Bioinformatics}, \bold{23}, 3280-3288. }
-\author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
+\author{Robin Nunkesser \email{Robin.Nunkesser@hshl.de}}
 \seealso{\code{"\linkS4class{GPAS}"}, \code{\link{GPASInteractions}}}
 \examples{
 # load example data

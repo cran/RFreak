@@ -54,7 +54,7 @@ The function \code{robreg.evol} returns an object of class "evolreg". This objec
   P. J. Rousseeuw (1984), Least Median of Squares Regression. \emph{Journal of the American Statistical Association} \bold{79}, 871--881.
 
 }
-\author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
+\author{Robin Nunkesser \email{Robin.Nunkesser@hshl.de}}
 \seealso{
   \code{"\linkS4class{evolreg}"}
 }

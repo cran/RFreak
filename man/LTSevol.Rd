@@ -28,7 +28,7 @@ The function \code{LTSevol} returns an object of class "ltsEA". This object cont
   P. J. Rousseeuw (1984), Least Median of Squares Regression. \emph{Journal of the American Statistical Association} \bold{79}, 871--881.
 
 }
-\author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
+\author{Robin Nunkesser \email{Robin.Nunkesser@hshl.de}}
 \seealso{
   \code{"\linkS4class{ltsEA}"}
 }

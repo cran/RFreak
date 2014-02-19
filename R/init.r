@@ -1,7 +1,6 @@
 # Initializes Java
 
 .onLoad <- function(libname, pkgname) {
-	if(!require(rJava)) stop("rFreak needs rJava")
 	if ((!is.null(Sys.info())) && (Sys.info()[1]=="Darwin")) {
 #		options(java.parameters=c("-Xms1G","-Xmx1G","-Djava.awt.headless=true"))
 		options(java.parameters=c("-Djava.awt.headless=true"))

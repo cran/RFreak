@@ -1,9 +1,7 @@
-import(methods)
+import(methods,rJava)
 
 exportClasses("ltsEA", "FreakReturn","GPAS")
 exportMethods("show","predict")
-#exportMethods("show", "print", "plot", "summary", "identify")
-
 
 #export everything except for functions beginning with .
 exportPattern("^[^\\.]")

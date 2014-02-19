@@ -12,6 +12,6 @@ A \code{FreakReturn} object holds only one slot, containing a \code{data.frame} 
     \item{\code{summary}:}{A \code{data.frame} with informations for each returned individual on the run the individual was found in, the generation the individual was created in, the objective value(s) as returned by the fitness function, and the individual itself.}
   }
 }
-\author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
+\author{Robin Nunkesser \email{Robin.Nunkesser@hshl.de}}
 \seealso{\code{"\linkS4class{ltsEA}"}, \code{"\linkS4class{GPAS}"}}
 \keyword{classes}

@@ -20,7 +20,7 @@ An \code{evolreg} object holds four slots.
 \section{Extends}{
 Class \code{"FreakReturn"}, directly.
 }
-\author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
+\author{Robin Nunkesser \email{Robin.Nunkesser@hshl.de}}
 \seealso{
   \code{"\linkS4class{FreakReturn}"}, \code{\link{robreg.evol}}
 }

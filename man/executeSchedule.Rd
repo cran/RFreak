@@ -18,7 +18,7 @@ executeSchedule(freakfile = "schedule.freak")
   \item{objective value(s)}{The objective value(s) as returned by the fitness function}
   \item{individual}{A string representation of the individual}
 }
-\author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
+\author{Robin Nunkesser \email{Robin.Nunkesser@hshl.de}}
 \section{Warning}{
 To obtain a result, the schedule needs to have a stopping criterion and the observer "Result" and the view "R Return" which are automatically preselected when using \code{launchScheduleEditor}.
 }

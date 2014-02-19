@@ -1,46 +1,3 @@
-.tempInit<-function() {
-	require(rJava)	
-	if (.Platform$OS.type=="windows") {	
-		.jinit(	
-				c(
-					"C:/sfb475a5/FrEAK",
-					"C:/sfb475a5/FrEAK/export/lib/bsh-2.0b1.jar",
-					"C:/sfb475a5/FrEAK/export/lib/colt.jar",
-					"C:/sfb475a5/FrEAK/export/lib/jargs.jar",
-					"C:/sfb475a5/FrEAK/export/lib/jdom.jar",
-					"C:/sfb475a5/FrEAK/export/lib/jgraph.jar",
-					"C:/sfb475a5/FrEAK/export/lib/jicos-system.jar",
-					"C:/sfb475a5/FrEAK/export/lib/jlfgr-1_0.jar",
-					"C:/sfb475a5/FrEAK/export/lib/ostermillerutils_1_04_03_for_kaffe.jar"
-				),parameters=c("-Xms1G","-Xmx1G")			
-			);
-	 } else {
-		.jinit(
-				c("/Users/nunkesser/sfb475a5/RFrEAK/bin",
-				 "/Users/nunkesser/sfb475a5/RFrEAK/lib/jargs.jar",
-				 "/Users/nunkesser/sfb475a5/RFrEAK/lib/jdom.jar",
-				 "/Users/nunkesser/sfb475a5/RFrEAK/lib/bsh-2.0b1.jar",
-				 "/Users/nunkesser/sfb475a5/RFrEAK/lib/jgraph.jar",
-				 "/Users/nunkesser/sfb475a5/RFrEAK/lib/colt.jar",		
-				 "/Users/nunkesser/sfb475a5/RFrEAK/lib/jicos-system.jar",
-				 "/Users/nunkesser/sfb475a5/RFrEAK/lib/jlfgr-1_0.jar",
-				 "/Users/nunkesser/sfb475a5/RFrEAK/lib/ostermillerutils_1_04_03_for_kaffe.jar"
-				),parameters=c("-Xms1G","-Xmx1G","-Djava.awt.headless=true")
-			);
-	 }
-
-#		.jinit(
-#				c("/Users/nunkesser/sfb475a5/RFreakPackage/inst/java/rfreak-0.2.jar"),
-#				parameters=c("-Xms1G","-Xmx1G","-Djava.awt.headless=true")
-#			);
-
-	#.jcall("freak/Freak","V","setDebugLevel",as.integer(5));
-
-	.jcall("freak/rinterface/control/LogRegInterface", "V", "setRMode");   
-	.jcall("freak/rinterface/control/RFlags", "V", "setUseCase",.jfield("freak/rinterface/control/RFlags","I","R"));   
-	
-}
-
 setClass("FreakReturn", representation(summary="data.frame"))
 
 setMethod("show","FreakReturn",
@@ -275,7 +232,7 @@ launchScheduleEditor <- function(saveTo="schedule.freak",load=NULL){
 	if (.jcall("freak/rinterface/control/RFreak","Z", "isStartable")) { 		
 		if ((!is.null(Sys.info())) && (Sys.info()[1]=="Darwin")) {
 			if (is.null(load)) load<-"NULL"
-			system(paste("java -jar ",system.file("java", "rfreak-0.2-2.jar", package = "RFreak")," --edit-schedule='",load,"' --save-edited-schedule='",saveTo,"'",sep=""))
+			system(paste("java -jar ",system.file("java", "RFrEAK-0.2-8.jar", package = "RFreak")," --edit-schedule='",load,"' --save-edited-schedule='",saveTo,"'",sep=""))
 		} else {
 			.jcall("freak/gui/scheduleeditor/ScheduleEditor", "V", "setRSaveTo",as.character(saveTo));
 			if (is.null(load)) {

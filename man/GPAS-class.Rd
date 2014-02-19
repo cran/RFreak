@@ -21,7 +21,7 @@ A \code{GPAS} object holds two slots.
 \section{Extends}{
 Class \code{"FreakReturn"}, directly.
 }
-\author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
+\author{Robin Nunkesser \email{Robin.Nunkesser@hshl.de}}
 \seealso{
   \code{"\linkS4class{FreakReturn}"}, \code{\link{GPASDiscrimination}}, \code{\link{GPASInteractions}}
 }

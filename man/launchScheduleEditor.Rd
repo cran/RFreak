@@ -20,7 +20,7 @@ A detailed instruction on how to set up schedules can be found in the User's Gui
 \references{FrEAK User's Guide: 
 
 \url{http://ls2-www.cs.uni-dortmund.de/~nunkesser/software/usersguide.pdf}}
-\author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
+\author{Robin Nunkesser \email{Robin.Nunkesser@hshl.de}}
 \section{Warning}{
 Editing schedules has to be finished by pressing the "Finish" button to obtain a file including the schedule.  The observer "Result" and the view "R Return" - which are preselected - and a stopping criterion are necessary for the R interface to work.
 }

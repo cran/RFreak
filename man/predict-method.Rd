@@ -19,7 +19,7 @@ Takes an individual from a GPAS object and predicts on the basis of new predicto
 \value{
   Returns a vector with the new predictions.
 }
-\author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
+\author{Robin Nunkesser \email{Robin.Nunkesser@hshl.de}}
 \seealso{
   \code{"\linkS4class{GPAS}"}, \code{\link{GPASDiscrimination}}, \code{\link{GPASInteractions}}
 }

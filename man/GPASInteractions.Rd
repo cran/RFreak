@@ -32,7 +32,7 @@ GPASInteractions(resp, preds, runs = 1, generations = 10000,
 
 GraphViz: \url{http://www.graphviz.org/}
 }
-\author{Robin Nunkesser \email{Robin.Nunkesser@tu-dortmund.de}}
+\author{Robin Nunkesser \email{Robin.Nunkesser@hshl.de}}
 \seealso{\code{"\linkS4class{GPAS}"}, \code{\link{GPASDiscrimination}}}
 \examples{
 # load example data
